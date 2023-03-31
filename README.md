@@ -1,18 +1,5 @@
 # market
 
-# Runing 
-```
-npm install
-
-docker-compose up -d 
-
-npx prisma gen
-
-yarn pra:gen
-
-yarn start
-```
-
 # 관련 자료
 
 [prisma reference](https://www.prisma.io/docs/reference)
@@ -20,64 +7,56 @@ yarn start
 # 프로젝트 실행 순서
 
 ```
-$ yarn install
-$ npx prisma
-$ npx prisma db push
+docker-compose up -d 
+
+npm install
+
+npm run pra:gen
+
+npm run start
 
 ```
 
 # prisma studio
 ```
 // prisma용 웹 DB클라이언트 라고 생각하면 된다.
-$ npx prisma stuido
+npx prisma stuido
 ```
 
-# prisma 명령어 TODO: 모든 명령어 익숙해 질때까지 차곡차곡 쌓아가자
+# prisma 명령어
 
 ```
 // prisma schema db에 반영
-$ npx prisma db push
+npx prisma db push
 
 
 // 적용되지 않은 가장 최근의 마이그레이션 파일을 사용 - 없으면 새로 만듬
 // migrate는 데이터베이스 내용을 초기화
-$ npx prisma migrate dev
+npx prisma migrate dev
 
 // 임시 마이그레이션 파일 만들기
-$ npx prisma migrate dev --name 파일이름 --create-only
+npx prisma migrate dev --name 파일이름 --create-only
 
 // 마이그레이션 파일 수정하기
 ALTER TABLE "Profile"
 RENAME COLUMN "biograpy" TO "biography"
 
 // 임시 마이그레이션 파일 DB에 적용하기
-$ npx prisma migrate dev
+npx prisma migrate dev
 
 // DB 재설정 (초기화)
-$ npx prisma migrate reset
+npx prisma migrate reset
 
 // DB를 수동으로 수정한뒤에 수정사항 가져오기
-$ npx prisma db pull
+npx prisma db pull
 
 // DB를 수동으로 수정한뒤에 마이그레이션 파일에 저장하기
-$ npx prisma migrate dev --name 마이그레이션
+npx prisma migrate dev --name 마이그레이션
 ```
 
 # Prisma connection test 안하는 이유
 - 현재 jest에서 memory 이슈 관련으로 많은 문제가 제기되고 있음
 - jest, nest 인지 판단은 안되지만 해당 이슈 링크를 보고 계속 참조 [Prisma issue](https://github.com/prisma/prisma/issues/12339)
-
-
-# TODO List
-  - [ ] README.md 작성
-  - [ ] @submodule git 분리시키기
-  - [ ] commitlint 적용 
-  - [ ] user, role crud 완료
-  - [ ] Test code 작성
-  - [x] jest 사용시 로거 주입을 해도 winston 초기화 안되는 부분 수정(main.ts에서 실행하고 있기때문임)
-  - [x] test pass는 되지만... loggerService 에서 Error만 찍힘 위 내용과 같이 확인해보기
-  - [ ] redis error jest exit 안됨
-    (A worker process has failed to exit gracefully and has been force exited. This is likely caused by tests leaking due to improper teardown. Try running with --detectOpenHandles to find leaks. Active timers can also cause this, ensure that .unref() was called on them.)
 
 # Jest 
 
