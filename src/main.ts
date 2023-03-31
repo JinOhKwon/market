@@ -26,14 +26,14 @@ async function bootstrap() {
     app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
 
     // 운영환경일 경우...
-    if (configService.getConfig().nodeEnv === process.env['NODE_ENV'] ?? 'local') {
+    if (configService.getConfig().nodeEnv === 'production' ?? 'local') {
       app.enable('trust proxy');
       app.use(compression());
-      app.use(helmet()); // TODO: helment 설치
+      app.use(helmet());
     } else {
       // TODO: 익숙해지면 지우자localhost:3333/api
       SwaggerModule.setup(
-        'api',
+        'swagger',
         app,
         SwaggerModule.createDocument(
           app,

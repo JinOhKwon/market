@@ -11,6 +11,10 @@ export interface AppError extends Error {
    */
   readonly message: string;
   /**
+   * 쓰기 여부
+   */
+  readonly isWrite?: boolean;
+  /**
    * 메시지 아규먼트
    */
   msgArgs?: Array<string> | Array<number>;

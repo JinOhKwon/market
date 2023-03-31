@@ -24,29 +24,29 @@ export class HttpLoggingInterceptor implements NestInterceptor {
     );
 
     return next.handle().pipe(
-      catchError((err: any) =>
+      catchError((error: any) =>
         throwError(() => {
-          if (!isNil(err?.response)) {
-            const msg = `Code: ${err.response.code} Message: ${err.response.message}`;
+          if (!isNil(error?.response)) {
+            const msg = `Code: ${error.response.code} Message: ${error.response.message}`;
 
             this.loggerService.error(
               `Error: HTTP Method - [ERROR - ${request.method}] Request URL: ${(request as any).originalUrl} Time: ${moment().format(
                 'YYYY년 MM월 DD일  HH시mm분ss초',
               )} ${msg}`,
               {
-                trace: err.stack,
-                args: err.response.msgArgs,
+                trace: error.stack,
+                args: error.response.msgArgs,
               },
             );
           } else {
-            this.loggerService.error(err, {
-              trace: err.stack,
+            this.loggerService.error(error, {
+              trace: error.stack,
             });
           }
 
           return {
             isWrite: true,
-            err,
+            error,
           };
         }),
       ),

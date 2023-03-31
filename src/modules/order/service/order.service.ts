@@ -85,12 +85,7 @@ export class OrderService {
     }
   }
 
-  async save(orderId: string, orderCreateInput: Prisma.OrderCreateInput): Promise<any> {
-    const result = await this.find(orderId);
-    if (isEmpty(result)) {
-      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER001, orderId));
-    }
-
+  async save(orderCreateInput: Prisma.OrderCreateInput): Promise<any> {
     await lastValueFrom(from(this.prismaService.order.create({ data: orderCreateInput })));
   }
 
