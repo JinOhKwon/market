@@ -11,7 +11,14 @@ docker-compose up -d
 
 npm install
 
-npm run pra:gen
+// 코드 생성
+npx prisma generate
+
+// db 반영
+npx prisma db push
+
+// seed 생성
+npx prisma db seed
 
 npm run start
 

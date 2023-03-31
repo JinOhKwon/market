@@ -14,31 +14,44 @@ export class OrderController {
   }
 
   @Get(':orderId')
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   get(@Param('orderId') orderId: string): Promise<OrderResponse> {
     return this.orderService.find(orderId);
   }
 
-  @Post()
+  @Post(':orderId')
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() orderRequest: OrderRequest) {
-    return this.orderService.save(orderRequest);
+  async create(@Param('orderId') orderId: string, @Body() orderRequest: OrderRequest) {
+    await this.orderService.save(orderId, orderRequest);
   }
 
   @Put(':orderId')
   @HttpCode(HttpStatus.OK)
-  update(@Param('orderId') orderId: string, @Body() orderRequest: OrderRequest) {
-    return this.orderService.modify(orderId, orderRequest);
+  async update(@Param('orderId') orderId: string, @Body() orderRequest: OrderRequest) {
+    await this.orderService.modify(orderId, orderRequest);
+  }
+
+  @Patch(':orderId/accept')
+  @HttpCode(HttpStatus.OK)
+  async orderAccept(@Param('orderId') orderId: string, @Body() orderRequest: OrderRequest) {
+    await this.orderService.orderAccept(orderId, orderRequest);
+  }
+
+  @Patch(':orderId/complete')
+  @HttpCode(HttpStatus.OK)
+  async createComplete(@Param('orderId') orderId: string, @Body() orderRequest: OrderRequest) {
+    await this.orderService.createComplete(orderId, orderRequest);
   }
 
   @Patch(':orderId')
   @HttpCode(HttpStatus.OK)
-  patch(@Param('orderId') orderId: string, @Body() orderRequest: OrderRequest) {
-    return this.orderService.modify(orderId, orderRequest);
+  async patch(@Param('orderId') orderId: string, @Body() orderRequest: OrderRequest) {
+    await this.orderService.modify(orderId, orderRequest);
   }
+
   @Delete(':orderId')
   @HttpCode(HttpStatus.OK)
-  delete(@Param('orderId') orderId: string) {
-    return this.orderService.delete(orderId);
+  async delete(@Param('orderId') orderId: string) {
+    await this.orderService.delete(orderId);
   }
 }

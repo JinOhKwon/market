@@ -1,25 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { Order, Prisma } from '@prisma/client';
+import { Order, Prisma, Status } from '@prisma/client';
 import { PrismaService } from 'core';
-import { concatMap, from, lastValueFrom, of, reduce } from 'rxjs';
+import { isEmpty } from 'lodash';
+import { from, lastValueFrom } from 'rxjs';
 import { OrderResponse } from '../api/dto/order.response';
+import { OrderError, OrderErrorEnum } from '../infrastructure/constants/order-error.enum';
+import { OrderNotFoundException } from '../infrastructure/exception/order-notfound.exception';
 
 @Injectable()
 export class OrderService {
   constructor(private prismaService: PrismaService) { }
 
   async findAll(): Promise<Array<OrderResponse>> {
-    return await lastValueFrom(from(this.prismaService.order.findMany()).pipe(
-      concatMap((orders: Array<Order>) => {
-        return of(
-          orders.map((order: Order) => {
-            return {
-              ...order
-            };
-          }),
-        );
-      }),
-    ));
+    return await lastValueFrom(from(this.prismaService.order.findMany()));
   }
 
   async find(orderId: string): Promise<Order> {
@@ -29,22 +22,85 @@ export class OrderService {
           id: Number(orderId),
         },
       }),
-    ).pipe(
-      reduce((acc, value) => {
-        return {
-          ...acc,
-          [value.id]: value,
-        };
-      }, {} as Order),
     ));
   }
 
-  async save(OrderCreateInput: Prisma.OrderCreateInput): Promise<any> {
-    return await lastValueFrom(from(this.prismaService.order.create({ data: OrderCreateInput })));
+  async orderAccept(orderId: string, orderUpdateInput: Prisma.OrderUpdateInput): Promise<any> {
+    let param: Prisma.OrderUpdateInput;
+
+    const result = await this.find(orderId);
+
+    if (isEmpty(result)) {
+      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER001, orderId));
+    }
+
+    if (result.status === Status.NONE) {
+      param = {
+        ...orderUpdateInput,
+        status: Status.ORDERED,
+      }
+      await lastValueFrom(from(
+        this.prismaService.order.update({
+          data: param,
+          where: {
+            id: Number(orderId),
+          },
+        }),
+      ));
+    } else {
+      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER002, {
+        status: result.status,
+        itemName: result.itemName
+      }));
+    }
+  }
+
+  async createComplete(orderId: string, orderUpdateInput: Prisma.OrderUpdateInput): Promise<any> {
+    let param: Prisma.OrderUpdateInput;
+
+    const result = await this.find(orderId);
+
+    if (isEmpty(result)) {
+      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER001, orderId));
+    }
+
+    if (result.status !== Status.COMPLETE) {
+      param = {
+        ...orderUpdateInput,
+        status: Status.COMPLETE,
+      }
+      await lastValueFrom(from(
+        this.prismaService.order.update({
+          data: param,
+          where: {
+            id: Number(orderId),
+          },
+        }),
+      ));
+    } else {
+      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER002, {
+        status: result.status,
+        itemName: result.itemName
+      }));
+    }
+  }
+
+  async save(orderId: string, orderCreateInput: Prisma.OrderCreateInput): Promise<any> {
+    const result = await this.find(orderId);
+    if (isEmpty(result)) {
+      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER001, orderId));
+    }
+
+    await lastValueFrom(from(this.prismaService.order.create({ data: orderCreateInput })));
   }
 
   async modify(orderId: string, orderUpdateInput: Prisma.OrderUpdateInput): Promise<any> {
-    return await lastValueFrom(from(
+    const result = await this.find(orderId);
+    if (isEmpty(result)) {
+      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER001, orderId));
+    }
+
+    await lastValueFrom(from(
       this.prismaService.order.update({
         data: orderUpdateInput,
         where: {
@@ -55,7 +111,12 @@ export class OrderService {
   }
 
   async delete(orderId: string): Promise<any> {
-    return await lastValueFrom(from(
+    const result = await this.find(orderId);
+    if (isEmpty(result)) {
+      throw new OrderNotFoundException(OrderError(OrderErrorEnum.ORDER001, orderId));
+    }
+
+    await lastValueFrom(from(
       this.prismaService.order.delete({
         where: {
           id: Number(orderId),

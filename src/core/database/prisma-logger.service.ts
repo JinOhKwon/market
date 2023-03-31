@@ -10,12 +10,13 @@ import { highlight } from 'sql-highlight';
  */
 @Injectable()
 export class PrismaLogger {
+  private readonly loggerService: LoggerService = new LoggerService(PrismaLogger.name);
   /**
    * 생성자
    *
    * @param option 옵션
    */
-  constructor(@Inject('LoggerService') private loggerService: LoggerService, @Inject('DebugMode') private debugMode: boolean) {
+  constructor(@Inject('DebugMode') private debugMode: boolean) {
     this.debugMode = debugMode;
   }
   /**
@@ -30,40 +31,26 @@ export class PrismaLogger {
       return;
     }
 
-    this.loggerService.log('----------------- QUERY START ----------------- ', {
-      context: PrismaLogger.name,
-    });
+    this.loggerService.log('----------------- QUERY START ----------------- ');
 
     this.loggerService.log(
       `query: ${highlight(query)} - Took ${duration}ms -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')} - Params: ${params}`,
-      {
-        context: PrismaLogger.name,
-      },
     );
 
-    this.loggerService.log('----------------- QUERY END  ----------------- ', {
-      context: PrismaLogger.name,
-    });
+    this.loggerService.log('----------------- QUERY END  ----------------- ');
   }
 
   info(queryEvent: Prisma.QueryEvent): void {
     const { timestamp, query, params, duration } = queryEvent;
     this.loggerService.log(
-      `info: ${highlight(query)} - Took ${duration}ms -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')} - Params: ${params}`,
-      {
-        context: PrismaLogger.name,
-      },
+      `info: ${highlight(query)} - Took ${duration}ms -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')} - Params: ${params}`
     );
   }
 
   warn(queryEvent: Prisma.QueryEvent): void {
     const { timestamp, query, params, duration } = queryEvent;
-
     this.loggerService.warn(
-      `warn: ${highlight(query)} - Took ${duration}ms -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')} - Params: ${params}`,
-      {
-        context: PrismaLogger.name,
-      },
+      `warn: ${highlight(query)} - Took ${duration}ms -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')} - Params: ${params}`
     );
   }
 
@@ -72,15 +59,8 @@ export class PrismaLogger {
 
     if (!isUndefined(query)) {
       this.loggerService.error(
-        `error: ${highlight(query)} - Took ${duration}ms -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')} - Params: ${params}`,
-        {
-          context: PrismaLogger.name,
-        },
+        `error: ${highlight(query)} -message ${message} - target: ${target} - Took ${duration}ms -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')} - Params: ${params}`
       );
-    } else {
-      this.loggerService.error(`error: ${message} - target: ${target} -Time: ${moment(timestamp).format('YYYY년 MM월 DD일  HH시mm분ss초')}`, {
-        context: PrismaLogger.name,
-      });
     }
   }
 

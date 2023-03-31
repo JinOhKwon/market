@@ -23,7 +23,7 @@ model Order {
   /// 금액
   price      Float    @map("price") @db.Float()
   /// 주문 상태
-  status     String   @map("status") @db.VarChar(255)
+  status     Status   @default(NONE) @map("status")
   /// 등록자 아이디
   regId      String?  @map("reg_id") @db.VarChar(255)
   /// 등록자 명
@@ -40,16 +40,10 @@ model Order {
 
 /// 상태
 enum Status {
+  /// 주문이 아무것도 아닌 기본 상태
+  NONE
   /// 주문이 접수되었지만 처리되지 않은 상태
   ORDERED
-  /// 주문이 처리 중인 상태
-  PROCESSING
-  /// 상품이 출고되었지만 아직 배송 중인 상태
-  SHIPPED
-  /// 상품이 배송되어 고객에게 도착한 상태
-  DELIVERED
-  /// 주문이 취소된 상태
-  CANCELED
-  /// 상품 가격이 환불된 상태
-  REFUNDED
+  /// 주문이 완료된 상태
+  COMPLETE
 }

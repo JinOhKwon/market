@@ -73,9 +73,9 @@ export class LoggerService implements NestLoggerService {
 
     if (typeof message === 'object') {
       this.existLogger(message, 'log', logParam?.context);
+    } else {
+      this.nestLogger.log(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
     }
-
-    this.nestLogger.log(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
   }
 
   /**
@@ -96,9 +96,10 @@ export class LoggerService implements NestLoggerService {
 
     if (message instanceof Error || typeof message === 'object') {
       this.existLogger(message, 'error', logParam?.stack, logParam?.context, logParam?.trace);
+    } else {
+      this.nestLogger.error(toStringify(message, logParam?.args), logParam?.trace, logParam?.stack, logParam?.context, { ...logParam?.args });
     }
 
-    this.nestLogger.error(toStringify(message, logParam?.args), logParam?.stack, logParam?.context, { ...logParam?.args });
   }
 
   /**
@@ -119,9 +120,9 @@ export class LoggerService implements NestLoggerService {
 
     if (typeof message === 'object') {
       this.existLogger(message, 'warn');
+    } else {
+      this.nestLogger.warn(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
     }
-
-    this.nestLogger.warn(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
   }
 
   /**
@@ -142,9 +143,9 @@ export class LoggerService implements NestLoggerService {
 
     if (typeof message === 'object') {
       this.existLogger(message, 'debug', logParam?.context);
+    } else {
+      this.nestLogger.debug(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
     }
-
-    this.nestLogger.debug(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
   }
 
   /**
@@ -165,9 +166,10 @@ export class LoggerService implements NestLoggerService {
 
     if (typeof message === 'object') {
       this.existLogger(message, 'verbose', logParam?.context);
+    } else {
+      this.nestLogger.verbose(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
     }
 
-    this.nestLogger.verbose(toStringify(message, logParam?.args), logParam?.context, { ...logParam?.args });
   }
 
   /**

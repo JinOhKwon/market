@@ -26,7 +26,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --no-cache"
   },
   "prisma": {
-    "schema": "prisma/schema.prisma"
+    "schema": "prisma/schema.prisma",
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
     "@liaoliaots/nestjs-redis": "^9.0.5",

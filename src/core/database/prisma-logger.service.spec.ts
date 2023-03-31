@@ -1,14 +1,14 @@
 import { Test } from '@nestjs/testing';
-import { LoggerService, winstonConfig } from 'core/logger';
+import { winstonConfig } from 'core/logger';
 import { PrismaLogger } from './prisma-logger.service';
 
 const trueLoggerProvider = {
   provide: PrismaLogger,
-  useFactory: () => new PrismaLogger(new LoggerService('true Logger'), true),
+  useFactory: () => new PrismaLogger(true),
 };
 const falseLoggerProvider = {
   provide: PrismaLogger,
-  useFactory: () => new PrismaLogger(new LoggerService('false Logger'), false),
+  useFactory: () => new PrismaLogger(false),
 };
 
 describe('prismaLoggerService 테스트', () => {
@@ -89,6 +89,7 @@ describe('prismaLoggerService 테스트', () => {
         params: 'test',
         duration: 1,
         target: 'test',
+        message: ''
       });
 
       expect(loggerSpy).toHaveBeenCalled();
@@ -157,6 +158,7 @@ describe('prismaLoggerService 테스트', () => {
         params: 'test',
         duration: 1,
         target: 'test',
+        message: ''
       });
 
       expect(loggerSpy).toHaveBeenCalled();

@@ -1,10 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { AppError } from 'common';
 
-/**
- * 사용자 데이터 없음(`NOT_FOUND: 404`) 에러이다.
- */
-export class UserNotFoundException extends NotFoundException {
+export class OrderNotFoundException extends NotFoundException {
   // eslint-disable-next-line constructor-super
   constructor(errData?: AppError | string, ...msgArgs: Array<string> | Array<number>) {
     if (errData) {
