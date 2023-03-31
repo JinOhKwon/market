@@ -1,7 +1,9 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards } from '@nestjs/common';
-import { AuthRequest, AuthResponse, SocialRequest } from '@submodule/api';
 import { AuthService } from '../auth.service';
 import { GoogleAtuhGuard } from '../guards/google-auth.guard';
+import { AuthRequest } from './dto/auth.request';
+import { AuthResponse } from './dto/auth.response';
+import { SocialRequest } from './dto/social.request';
 
 /**
  * 인증 컨트롤러이다.
@@ -13,7 +15,7 @@ export class AuthController {
    *
    * @param authService 인증 서비스
    */
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService) { }
 
   /**
    * 로그인을 한다.

@@ -13,7 +13,7 @@
         "--runTestsByPath",
         "${jest.testFile}"
       ],
-      "cwd": "${workspaceRoot}/nestjs-template",
+      "cwd": "${workspaceRoot}/market",
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "runtimeExecutable": "yarn"

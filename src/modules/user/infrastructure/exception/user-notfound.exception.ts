@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
-import { AppError } from '@submodule/common';
+import { AppError } from 'common';
 
 /**
  * 사용자 데이터 없음(`NOT_FOUND: 404`) 에러이다.

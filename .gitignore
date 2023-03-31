@@ -93,4 +93,4 @@ yarn.lock
 /generated
 
 ## Docs
-/docs
+prisma/docs

@@ -1,5 +1,5 @@
 import { Logger as NestLogger, LoggerService as NestLoggerService, LogLevel } from '@nestjs/common';
-import { toStringify } from '@submodule/common';
+import { toStringify } from 'common';
 import { isUndefined } from 'lodash';
 
 /**

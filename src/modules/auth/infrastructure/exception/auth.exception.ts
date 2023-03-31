@@ -1,6 +1,6 @@
 /* eslint-disable constructor-super */
 import { UnauthorizedException } from '@nestjs/common';
-import { AppError } from '@submodule/common';
+import { AppError } from 'common';
 
 /**
  * 인증 실패(`UNAUTHORIZED: 401`) 예외이다.

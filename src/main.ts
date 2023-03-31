@@ -38,10 +38,10 @@ async function bootstrap() {
         SwaggerModule.createDocument(
           app,
           new DocumentBuilder()
-            .setTitle('nestjs-template Server')
-            .setDescription('The nestjs-template API description')
+            .setTitle('market Server')
+            .setDescription('The market API description')
             .setVersion('1.0')
-            .addTag('nestjs-template')
+            .addTag('market')
             .build(),
         ),
       );

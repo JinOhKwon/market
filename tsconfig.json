@@ -18,6 +18,7 @@
     "src/**/*",
     "e2e/**/*",
     "test/init/**/*",
+    "/prisma",
   ],
   "exclude": [
     "node_modules"

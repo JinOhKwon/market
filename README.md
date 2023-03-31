@@ -1,8 +1,8 @@
-# nestjs-template
+# market
 
 # Runing 
 ```
-yarn install
+npm install
 
 docker-compose up -d 
 

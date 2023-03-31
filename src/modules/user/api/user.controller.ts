@@ -1,13 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Put } from '@nestjs/common';
-import { UserResponse } from '@submodule/api';
 import { Observable } from 'rxjs';
 import { UserService } from '../service/user.service';
+import { UserResponse } from './dto/user.response';
 
 /**
  * 사용자 컨트롤러이다.
  */
-// @UseGuards(JwtAuthGuard, RolesGuard)
-// @UseInterceptors(AuthUserInterceptor)
 @Controller('users')
 export class UserController {
   /**
@@ -15,7 +13,7 @@ export class UserController {
    *
    * @param userService 사용자 서비스
    */
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) { }
 
   /**
    * 전제 사용자 목록을 조회한다.
@@ -26,7 +24,6 @@ export class UserController {
    */
   @Get()
   @HttpCode(HttpStatus.OK)
-  // @Roles(AuthRole.ROLE_SUPER, AuthRole.ROLE_MANAGER, AuthRole.ROLE_USER)
   getList(): Observable<Array<UserResponse>> {
     return this.userService.findAll();
   }
@@ -39,7 +36,6 @@ export class UserController {
    */
   @Get(':userId')
   @HttpCode(HttpStatus.CREATED)
-  // @Roles(AuthRole.ROLE_SUPER, AuthRole.ROLE_MANAGER, AuthRole.ROLE_USER)
   get(@Param('userId') userId: string) {
     return this.userService.find(userId);
   }
@@ -52,7 +48,6 @@ export class UserController {
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  // @Roles(AuthRole.ROLE_SUPER, AuthRole.ROLE_MANAGER, AuthRole.ROLE_USER)
   create(@Body() userRequest: any) {
     return this.userService.save(userRequest);
   }
@@ -66,7 +61,6 @@ export class UserController {
    */
   @Put(':userId')
   @HttpCode(HttpStatus.OK)
-  // @Roles(AuthRole.ROLE_SUPER, AuthRole.ROLE_MANAGER, AuthRole.ROLE_USER)
   update(@Param('userId') userId: string, @Body() userRequest: any) {
     return this.userService.modify(userId, userRequest);
   }
@@ -80,7 +74,6 @@ export class UserController {
    */
   @Patch(':userId')
   @HttpCode(HttpStatus.OK)
-  // @Roles(AuthRole.ROLE_SUPER, AuthRole.ROLE_MANAGER, AuthRole.ROLE_USER)
   patch(@Param('userId') userId: string, @Body() userRequest: any) {
     return this.userService.modify(userId, userRequest);
   }
@@ -93,7 +86,6 @@ export class UserController {
    */
   @Delete(':userId')
   @HttpCode(HttpStatus.OK)
-  // @Roles(AuthRole.ROLE_SUPER, AuthRole.ROLE_MANAGER, AuthRole.ROLE_USER)
   delete(@Param('userId') userId: string) {
     return this.userService.delete(userId);
   }

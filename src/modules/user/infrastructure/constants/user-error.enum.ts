@@ -1,4 +1,4 @@
-import { AppError } from '@submodule/common';
+import { AppError } from 'common';
 
 export const USER_ERROR = 'UserError';
 

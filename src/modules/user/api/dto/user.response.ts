@@ -1,5 +1,5 @@
 import { YesOrNo } from '@prisma/client';
-import { BaseDto } from '@submodule/common';
+import { BaseDto } from 'common';
 
 /**
  * 사용자 응답

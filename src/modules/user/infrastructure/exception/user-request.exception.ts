@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { AppError } from '@submodule/common';
+import { AppError } from 'common';
 
 /**
  * 사용자 요청(`NOT_FOUND: 404`) 에러이다.

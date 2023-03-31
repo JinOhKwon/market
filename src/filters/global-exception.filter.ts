@@ -1,5 +1,5 @@
 import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
-import { AppError, toStringify } from '@submodule/common';
+import { AppError, toStringify } from 'common';
 import { LoggerService } from 'core';
 import { Response } from 'express';
 
